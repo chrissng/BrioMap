@@ -4,7 +4,7 @@ BrioMap enables butter smooth map zooming in OpenLayers
 
 Following code example use the zoomTo() function to achieve smooth zooming:
 
-```html
+```javascript
 map = new OpenLayers.BrioMap({
 	controls: [
 		new OpenLayers.Control.Navigation({
