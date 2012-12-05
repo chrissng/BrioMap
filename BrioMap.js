@@ -71,7 +71,6 @@ OpenLayers.BrioMap = OpenLayers.Class(OpenLayers.Map, {
 						map.applyTransform(dx, dy, scale);
 					})
 					.onComplete(function() {
-						consolePrintln("zooming complete");
 						map.applyTransform();
 						var resolution = map.getResolution() / this.scale,
 							zoom = map.getZoomForResolution(resolution, true)
@@ -79,7 +78,7 @@ OpenLayers.BrioMap = OpenLayers.Class(OpenLayers.Map, {
 						
 						map.isZoomTweening = false;
 						//clearInterval(zoomTweenUpdateIntervalID);
-						console.log("Final zoom: " + map.finalZoom);
+						
 					});
 				};
 				
@@ -102,10 +101,9 @@ OpenLayers.BrioMap = OpenLayers.Class(OpenLayers.Map, {
 				}
 				
                 if (!this.zoomTweenUpdateIntervalID) {
-                    consolePrintln("tween update start");
                     this.zoomTweenUpdateIntervalID = setInterval(function() { TWEEN.update(); }, 10);
                 }
-				console.log("\tTarget zoom: " + this.finalZoom);
+				
             } else {
                 var center = xy ? map.getZoomTargetCenter(xy, map.getResolutionForZoom(zoom)) : null;
                 map.setCenter(center, zoom);
