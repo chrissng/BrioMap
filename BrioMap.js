@@ -44,59 +44,58 @@ OpenLayers.BrioMap = OpenLayers.Class(OpenLayers.Map, {
      * xy - {<OpenLayers.Pixel>} optional zoom origin
      */
     zoomTo: function(zoom, xy) {
-        if (map.isValidZoomLevel(zoom)) {
-            if (map.baseLayer.wrapDateLine) {
-                zoom = map.adjustZoom(zoom);
+        if (this.isValidZoomLevel(zoom)) {
+            if (this.baseLayer.wrapDateLine) {
+                zoom = this.adjustZoom(zoom);
             }
-            if (map.zoomAnimate) {
-				if (!xy) xy = {x: map.getSize().w / 2, y: map.getSize().h / 2};
+            if (this.zoomAnimate) {
+				if (!xy) xy = {x: this.getSize().w / 2, y: this.getSize().h / 2};
 				if (this.finalZoom == undefined) this.finalZoom = zoom;
 				
-				var currentRes = map.getResolution(),
-                    targetRes = map.getResolutionForZoom(zoom);
+				var currentRes = this.getResolution(),
+                    targetRes = this.getResolutionForZoom(zoom);
 				
 				var zoomTweenFn = function(fromData, toData) {
-					return new TWEEN.Tween(fromData)
-					.to(toData, map.zoomDuration)
-					.delay(0)
-					.easing(map.zoomMethod)
-					.onStart(function() {
-						map.isZoomTweening = true;
-					})
-					.onUpdate(function() {
-						var containerOrigin = map.layerContainerOriginPx,
-							scale = this.scale,
-							dx = ((scale - 1) * (containerOrigin.x + map.getPixelOffset().x + 50 - this.xy.x)) | 0,
-							dy = ((scale - 1) * (containerOrigin.y + map.getPixelOffset().y + 50 - this.xy.y)) | 0;
-						map.applyTransform(dx, dy, scale);
-					})
-					.onComplete(function() {
-						map.applyTransform();
-						var resolution = map.getResolution() / this.scale,
-							zoom = map.getZoomForResolution(resolution, true)
-						map.moveTo(map.getZoomTargetCenter(this.xy, resolution), zoom, true);
-						
-						map.isZoomTweening = false;
-						//clearInterval(zoomTweenUpdateIntervalID);
-						
-					});
-				};
+                    return new TWEEN.Tween(fromData)
+                    .to(toData, map.zoomDuration)
+                    .delay(0)
+                    .easing(map.zoomMethod)
+                    .onStart(function() {
+                        map.isZoomTweening = true;
+                    })
+                    .onUpdate(function() {
+                        var containerOrigin = map.layerContainerOriginPx,
+                            scale = this.scale,
+                            dx = ((scale - 1) * (containerOrigin.x + map.getPixelOffset().x + 50 - this.xy.x)) | 0,
+                            dy = ((scale - 1) * (containerOrigin.y + map.getPixelOffset().y + 50 - this.xy.y)) | 0;
+                        map.applyTransform(dx, dy, scale);
+                    })
+                    .onComplete(function() {
+                        map.applyTransform();
+                        var resolution = map.getResolution() / this.scale,
+                            zoom = map.getZoomForResolution(resolution, true)
+                        map.moveTo(map.getZoomTargetCenter(this.xy, resolution), zoom, true);
+                        
+                        map.isZoomTweening = false;
+                        //clearInterval(zoomTweenUpdateIntervalID);
+                    });
+                };
 				
-				if (map.isZoomTweening) {
+				if (this.isZoomTweening) {
 					if (this.getZoom() < zoom) { 	// zoom in
 						this.finalZoom++;
 					} else { 						// zoom out
 						this.finalZoom--;
 					}
 					
-					var newZoomTween = zoomTweenFn({scale: 1, xy: xy}, {scale: map.getResolutionForZoom(this.prevZoom) / map.getResolutionForZoom(this.finalZoom) });
-					map.zoomTween.chain(newZoomTween);
-					map.zoomTween = newZoomTween;
+					var newZoomTween = zoomTweenFn({scale: 1, xy: xy, map:this}, {scale: this.getResolutionForZoom(this.prevZoom) / this.getResolutionForZoom(this.finalZoom) });
+					this.zoomTween.chain(newZoomTween);
+					this.zoomTween = newZoomTween;
 					this.prevZoom = this.finalZoom;
 				} else {
 					if (zoom != this.finalZoom) this.finalZoom = zoom; //reset (important)
 				
-					map.zoomTween = zoomTweenFn({scale: 1, xy: xy}, {scale: currentRes / targetRes}).start();
+					this.zoomTween = zoomTweenFn({scale: 1, xy: xy, map:this}, {scale: currentRes / targetRes}).start();
 					this.prevZoom = zoom;
 				}
 				
@@ -105,8 +104,8 @@ OpenLayers.BrioMap = OpenLayers.Class(OpenLayers.Map, {
                 }
 				
             } else {
-                var center = xy ? map.getZoomTargetCenter(xy, map.getResolutionForZoom(zoom)) : null;
-                map.setCenter(center, zoom);
+                var center = xy ? this.getZoomTargetCenter(xy, this.getResolutionForZoom(zoom)) : null;
+                this.setCenter(center, zoom);
             }
         }
     },
@@ -164,7 +163,7 @@ OpenLayers.BrioMap = OpenLayers.Class(OpenLayers.Map, {
             style.width = Math.round(100 * scale) + "px";
             style.height = Math.round(100 * scale) + "px";
 			
-			var pixelOffset = map.getPixelOffset();
+			var pixelOffset = this.getPixelOffset();
 			//style.top = ((pixelOffset.y > 0)?('-'+pixelOffset.y):(Math.abs(pixelOffset.y)))+'px';
 			//style.left = ((pixelOffset.x > 0)?('-'+pixelOffset.x):(Math.abs(pixelOffset.x)))+'px';
             
