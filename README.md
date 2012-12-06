@@ -9,21 +9,11 @@ map = new OpenLayers.BrioMap({
 	controls: [
 		new OpenLayers.Control.Navigation({
 			defaultDblClick: function (evt) { // touch
-				if (this.map.restrictedExtent.containsBounds(map.calculateBounds()) && 
-					this.map.restrictedExtent.containsLonLat(map.getLonLatFromPixel(evt.xy))) {
-					this.map.zoomTo(this.map.zoom + 1, evt.xy);
-				} else {
-					this.map.zoomTo(this.map.zoom + 1);
-				}
+				this.map.zoomTo(this.map.zoom + 1, evt.xy);
 			},
 			defaultClick: function (evt) { // touch: default is zoomOut()
 				if (evt.lastTouches && evt.lastTouches.length == 2) {
-					if (this.map.restrictedExtent.containsBounds(map.calculateBounds()) && 
-					this.map.restrictedExtent.containsLonLat(map.getLonLatFromPixel(evt.xy))) {
-						this.map.zoomTo(this.map.zoom - 1, evt.xy);
-					} else {
-						this.map.zoomTo(this.map.zoom - 1);
-					}
+					this.map.zoomTo(this.map.zoom - 1, evt.xy);
 				}
 			},
 			wheelChange: function(evt, deltaZ) {
@@ -34,12 +24,7 @@ map = new OpenLayers.BrioMap({
 				if (newZoom === currentZoom) {
 					return;
 				}
-				if (this.map.restrictedExtent.containsBounds(map.calculateBounds()) && 
-					this.map.restrictedExtent.containsLonLat(map.getLonLatFromPixel(evt.xy))) {
-					this.map.zoomTo(newZoom, evt.xy);
-				} else {
-					this.map.zoomTo(newZoom);
-				}
+				this.map.zoomTo(newZoom, evt.xy);
 			}
 		})
 	]
