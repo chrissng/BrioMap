@@ -1,4 +1,4 @@
-BrioMap enables butter smooth map zooming in OpenLayers
+BrioMap beautifies OpenLayers with butter smooth map zooming.
 
 ### Usage with OpenLayers ###
 
