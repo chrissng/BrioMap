@@ -49,7 +49,7 @@ OpenLayers.BrioMap = OpenLayers.Class(OpenLayers.Map, {
                 zoom = this.adjustZoom(zoom);
             }
             if (this.zoomAnimate) {
-				if (!xy) xy = {x: this.getSize().w / 2, y: this.getSize().h / 2};
+				if (!xy) xy = {x: this.getCurrentSize().w / 2, y: this.getCurrentSize().h / 2};
 				if (this.finalZoom == undefined) this.finalZoom = zoom;
 				
 				var currentRes = this.getResolution(),
