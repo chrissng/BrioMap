@@ -20,6 +20,10 @@ OpenLayers.BrioMap = OpenLayers.Class(OpenLayers.Map, {
     zoomMethod: TWEEN.Easing.Quadratic.InOut,
 
 	panMethod: OpenLayers.Easing.Expo.easeOut,
+
+    minZoom: 0,
+
+    maxZoom: 18,
     
 	/**
      * Property: layerContainerOriginPx
@@ -44,6 +48,10 @@ OpenLayers.BrioMap = OpenLayers.Class(OpenLayers.Map, {
      * xy - {<OpenLayers.Pixel>} optional zoom origin
      */
     zoomTo: function(zoom, xy) {
+        if (zoom < this.minZoom) zoom = this.minZoom;
+        if (zoom > this.maxZoom) zoom = this.maxZoom;
+        if (zoom == this.getZoom()) return;
+
         if (this.isValidZoomLevel(zoom)) {
             if (this.baseLayer.wrapDateLine) {
                 zoom = this.adjustZoom(zoom);
@@ -77,7 +85,6 @@ OpenLayers.BrioMap = OpenLayers.Class(OpenLayers.Map, {
                         map.moveTo(map.getZoomTargetCenter(this.xy, resolution), zoom, true);
                         
                         map.isZoomTweening = false;
-                        //clearInterval(zoomTweenUpdateIntervalID);
                     });
                 };
 				
@@ -99,10 +106,26 @@ OpenLayers.BrioMap = OpenLayers.Class(OpenLayers.Map, {
 					this.prevZoom = zoom;
 				}
 				
-                if (!this.zoomTweenUpdateIntervalID) {
-                    this.zoomTweenUpdateIntervalID = setInterval(function() { TWEEN.update(); }, 10);
-                }
-				
+                
+                window.requestAnimFrame = function(){
+                    return (
+                        /*window.requestAnimationFrame       || 
+                        window.webkitRequestAnimationFrame || 
+                        window.mozRequestAnimationFrame    || 
+                        window.oRequestAnimationFrame      || 
+                        window.msRequestAnimationFrame     || 
+                        */function(/* function*/  callback){
+                            window.setTimeout(callback, 1000 / 60);
+                        }
+                    );
+                }();
+                
+                map.isZoomTweening = true;
+                (function tweenLoop(){
+                    if (map.isZoomTweening) requestAnimFrame(tweenLoop);
+                    TWEEN.update();
+                })();
+
             } else {
                 var center = xy ? this.getZoomTargetCenter(xy, this.getResolutionForZoom(zoom)) : null;
                 this.setCenter(center, zoom);
@@ -204,7 +227,7 @@ OpenLayers.BrioMap = OpenLayers.Class(OpenLayers.Map, {
      */
     getZoomTargetCenter: function (xy, resolution) {
         var lonlat = null,
-            size = this.getSize(),
+            size = this.getCurrentSize(),
             deltaX  = size.w/2 - xy.x,
             deltaY  = xy.y - size.h/2,
             zoomPoint = this.getLonLatFromPixel(xy);
