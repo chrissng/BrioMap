@@ -62,7 +62,7 @@ OpenLayers.BrioMap = OpenLayers.Class(OpenLayers.Map, {
 				
 				var currentRes = this.getResolution(),
                     targetRes = this.getResolutionForZoom(zoom);
-				
+
 				var zoomTweenFn = function(fromData, toData) {
                     return new TWEEN.Tween(fromData)
                     .to(toData, map.zoomDuration)
@@ -109,12 +109,12 @@ OpenLayers.BrioMap = OpenLayers.Class(OpenLayers.Map, {
                 
                 window.requestAnimFrame = function(){
                     return (
-                        /*window.requestAnimationFrame       || 
+                        window.requestAnimationFrame       || 
                         window.webkitRequestAnimationFrame || 
                         window.mozRequestAnimationFrame    || 
                         window.oRequestAnimationFrame      || 
                         window.msRequestAnimationFrame     || 
-                        */function(/* function*/  callback){
+                        function(/* function*/  callback){
                             window.setTimeout(callback, 1000 / 60);
                         }
                     );
