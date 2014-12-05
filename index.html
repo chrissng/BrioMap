@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>BrioMap by chrissng</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>BrioMap</h1>
+        <p>Butter smooth OpenLayers Map zooming</p>
+
+        <p class="view"><a href="https://github.com/chrissng/BrioMap">View the Project on GitHub <small>chrissng/BrioMap</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/chrissng/BrioMap/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/chrissng/BrioMap/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/chrissng/BrioMap">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p>BrioMap beautifies OpenLayers with butter smooth map zooming.</p>
+
+<h3>
+<a id="usage-with-openlayers" class="anchor" href="#usage-with-openlayers" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage with OpenLayers</h3>
+
+<p>Following code example use the zoomTo() function to achieve smooth zooming:</p>
+
+<div class="highlight highlight-javascript"><pre>map <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">OpenLayers.BrioMap</span>({
+    controls<span class="pl-k">:</span> [
+        <span class="pl-k">new</span> <span class="pl-en">OpenLayers.Control</span>.Navigation({
+            <span class="pl-en">defaultDblClick</span>: <span class="pl-st">function</span> (<span class="pl-vpf">evt</span>) { <span class="pl-c">// touch</span>
+                <span class="pl-v">this</span>.map.zoomTo(<span class="pl-v">this</span>.map.zoom <span class="pl-k">+</span> <span class="pl-c1">1</span>, evt.xy);
+            },
+            <span class="pl-en">defaultClick</span>: <span class="pl-st">function</span> (<span class="pl-vpf">evt</span>) { <span class="pl-c">// touch: default is zoomOut()</span>
+                <span class="pl-k">if</span> (evt.lastTouches <span class="pl-k">&amp;&amp;</span> evt.lastTouches.<span class="pl-sc">length</span> <span class="pl-k">==</span> <span class="pl-c1">2</span>) {
+                    <span class="pl-v">this</span>.map.zoomTo(<span class="pl-v">this</span>.map.zoom <span class="pl-k">-</span> <span class="pl-c1">1</span>, evt.xy);
+                }
+            },
+            <span class="pl-en">wheelChange</span>: <span class="pl-st">function</span>(<span class="pl-vpf">evt</span>, <span class="pl-vpf">deltaZ</span>) {
+                <span class="pl-s">var</span> currentZoom <span class="pl-k">=</span> <span class="pl-v">this</span>.map.getZoom();
+                <span class="pl-s">var</span> newZoom <span class="pl-k">=</span> <span class="pl-v">this</span>.map.getZoom() <span class="pl-k">+</span> <span class="pl-s3">Math</span>.<span class="pl-s3">round</span>(deltaZ);
+                newZoom <span class="pl-k">=</span> <span class="pl-s3">Math</span>.<span class="pl-s3">max</span>(newZoom, <span class="pl-c1">0</span>);
+                newZoom <span class="pl-k">=</span> <span class="pl-s3">Math</span>.<span class="pl-s3">min</span>(newZoom, <span class="pl-v">this</span>.map.getNumZoomLevels());
+                <span class="pl-k">if</span> (newZoom <span class="pl-k">===</span> currentZoom) {
+                    <span class="pl-k">return</span>;
+                }
+                <span class="pl-v">this</span>.map.zoomTo(newZoom, evt.xy);
+            }
+        })
+    ]
+});</pre></div>
+
+<h3>
+<a id="additional-information" class="anchor" href="#additional-information" aria-hidden="true"><span class="octicon octicon-link"></span></a>Additional Information</h3>
+
+<p>BrioMap is adapted from Andreas Hocevar's deprecated animate-zoomto</p>
+
+<h3>
+<a id="dependency" class="anchor" href="#dependency" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dependency</h3>
+
+<p>BrioMap makes use of the awesome Tween.js library implemented by sole</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/chrissng">chrissng</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
