@@ -1,6 +1,6 @@
 BrioMap beautifies OpenLayers with butter smooth map zooming.
 
-*This work was originally intent for OpenLayers 2.11 (https://github.com/openlayers/ol2/releases/tag/release-2.11) used in my work some time ago where there is no slick map zooming*
+*This work was originally intended for OpenLayers 2.11 (https://github.com/openlayers/ol2/releases/tag/release-2.11) that was used in my work some time ago where there is no slick map zooming*
 
 ### Usage with OpenLayers ###
 
